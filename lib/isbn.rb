@@ -79,4 +79,14 @@ module ISBN
 		s + calc_checkDigit(s).to_s
 	end
 
+	def extract(s)
+		s.scan(/\d{13}|\d{10}/).map do |isbn|
+			# Discard invalid ISBNs
+			next nil unless verify(isbn)
+			# Convert everything to the new ISBN13s
+			isbn = isbn10_to_isbn13(isbn) if isbn.length < 13
+			isbn
+		end.compact.uniq
+	end
+
 end
