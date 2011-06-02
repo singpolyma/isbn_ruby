@@ -64,9 +64,9 @@ module ISBN
 	end
 
 	def calc_checkDigit(isbn_in)
-		if isbn_in.length == 13
+		if isbn_in.length == 12
 			return calc_checkDigit13(isbn_in)
-		elsif isbn_in.length == 10
+		elsif isbn_in.length == 9
 			return calc_checkDigit10(isbn_in)
 		else
 			return nil
