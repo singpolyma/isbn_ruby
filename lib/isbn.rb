@@ -127,4 +127,9 @@ module ISBN
 		return isbn[0,isbn.length-1] + calc_checkDigit(isbn).to_s
 	end
 
+	def isbn10_to_isbn13(isbn10)
+		s = '978' + isbn10.to_s[0..8]
+		s + calc_checkDigit(s).to_s
+	end
+
 end
