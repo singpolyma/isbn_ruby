@@ -12,8 +12,10 @@
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-class Isbn_checker
-	def verify_checkDigit(isbn_in, printValids)
+module Isbn_checker
+	module_function
+
+	def verify_checkDigit(isbn_in, printValids=false)
 		if isbn_in.length == 13
 			return verify_checkDigit13(isbn_in.upcase, printValids)
 		elsif isbn_in.length == 10
@@ -143,9 +145,4 @@ class Isbn_checker
 		puts "checked #{isbns_checked} isbns; #{isbns_invalid} invalid (#{(isbns_invalid/isbns_checked)*100.round}%) & #{isbns_valid} valid (#{(isbns_valid/isbns_checked)*100.round}%)"
 	end
 
-	def initialize()
-	end
-
-	def new
-	end
 end

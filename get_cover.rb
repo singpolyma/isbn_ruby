@@ -36,7 +36,7 @@ gif_1pixel_filesize = 43
 $error_msg = ""
 
 def fetch_covers(filename)
-	i1 = Isbn_checker.new
+	i1 = Isbn_checker
 	isbns_invalid = isbns_valid = isbns_checked = 0
 	File.open(filename, "r") do |f|
 		f.each { |isbn|
