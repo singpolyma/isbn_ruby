@@ -20,11 +20,9 @@
 require 'net/http'
 require 'json'
 
-# Uncomment the next line to include a custom subdirectory
-# for the isbn_ruby code. Shouldn't be necessary.
-#$: << File.join(File.dirname(__FILE__), "./isbn_ruby")
+$: << File.join(File.dirname(__FILE__), "../lib")
 
-require 'isbn_checker.rb'
+require 'isbn'
 
 # config.private.rb contains the following definitions:
 # $libthing_devkey [see http://www.librarything.com/services/keys.php for more info]
@@ -36,15 +34,14 @@ gif_1pixel_filesize = 43
 $error_msg = ""
 
 def fetch_covers(filename)
-	i1 = Isbn_checker
 	isbns_invalid = isbns_valid = isbns_checked = 0
 	File.open(filename, "r") do |f|
 		f.each { |isbn|
 			isbn = isbn.chomp
 
-			if i1.verify_checkDigit(isbn, false) == false
-				$log.puts("ISBN Check\tInvalid\t#{isbn}\tFixed=" + i1.fix_isbn(isbn))
-				isbn = i1.fix_isbn(isbn)
+			unless ISBN.verify(isbn)
+				$log.puts("ISBN Check\tInvalid\t#{isbn}\tFixed=" + ISBN.fix(isbn))
+				isbn = ISBN.fix(isbn)
 				isbns_invalid += 1
 			else
 				$log.puts("ISBN Check\tValid\t#{isbn}")

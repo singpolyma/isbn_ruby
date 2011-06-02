@@ -12,20 +12,20 @@
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-module Isbn_checker
+module ISBN
 	module_function
 
-	def verify_checkDigit(isbn_in, printValids=false)
+	def verify(isbn_in, printValids=false)
 		if isbn_in.length == 13
-			return verify_checkDigit13(isbn_in.upcase, printValids)
+			return verify_isbn13(isbn_in.upcase, printValids)
 		elsif isbn_in.length == 10
-			return verify_checkDigit10(isbn_in.upcase, printValids)
+			return verify_isbn10(isbn_in.upcase, printValids)
 		else
 			return nil
 		end
 	end
 
-	def verify_checkDigit10(isbn_in, printValids)
+	def verify_isbn10(isbn_in, printValids=false)
 		retVal = false
 		if (isbn_in.length == 10)
 			chkDgtX = calc_checkDigit10(isbn_in[0,isbn_in.length-1])
@@ -44,7 +44,7 @@ module Isbn_checker
 		retVal
 	end
 
-	def verify_checkDigit13(isbn_in, printValids)
+	def verify_isbn13(isbn_in, printValids=false)
 		retVal = false
 		if (isbn_in.length == 13)
 			chkDgt = calc_checkDigit13(isbn_in[0,isbn_in.length-1])
@@ -123,26 +123,8 @@ module Isbn_checker
 			checkDigit
 	end
 
-	def fix_isbn(isbn)
+	def fix(isbn)
 		return isbn[0,isbn.length-1] + calc_checkDigit(isbn).to_s
-	end
-
-	def check_isbnFile(filename)
-		isbns_checked = isbns_valid = isbns_invalid = 0
-
-		File.open(filename, "r") do |f|
-			f.each { |isbn|
-				isbn = isbn.chomp
-				if verify_checkDigit(isbn, false) == false
-					puts "#{isbn} is invalid; proper ISBN should be " + fix_isbn(isbn)
-					isbns_invalid +=1
-				else
-					isbns_valid += 1
-				end
-				isbns_checked += 1
-			}
-		end
-		puts "checked #{isbns_checked} isbns; #{isbns_invalid} invalid (#{(isbns_invalid/isbns_checked)*100.round}%) & #{isbns_valid} valid (#{(isbns_valid/isbns_checked)*100.round}%)"
 	end
 
 end
