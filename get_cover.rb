@@ -55,7 +55,7 @@ def fetch_covers(filename)
 			get_openlib_cover(isbn)
 			get_google_cover(isbn)
 
-			put "."
+			puts "."
 
 			isbns_checked += 1
 
