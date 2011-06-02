@@ -15,52 +15,8 @@
 module ISBN
 	module_function
 
-	def verify(isbn_in, printValids=false)
-		if isbn_in.length == 13
-			return verify_isbn13(isbn_in.upcase, printValids)
-		elsif isbn_in.length == 10
-			return verify_isbn10(isbn_in.upcase, printValids)
-		else
-			return nil
-		end
-	end
-
-	def verify_isbn10(isbn_in, printValids=false)
-		retVal = false
-		if (isbn_in.length == 10)
-			chkDgtX = calc_checkDigit10(isbn_in[0,isbn_in.length-1])
-			#puts "chkDgtX = #{chkDgtX}; isbn_in = #{isbn_in}; isbn(substr) = #{isbn_in[0,isbn_in.length-1]}"
-			if isbn_in == isbn_in[0,isbn_in.length-1].to_s + chkDgtX.to_s.upcase
-				retVal=true
-				if printValids
-					puts "valid check digit found in isbn #{isbn_in}!"
-				end
-			else
-				puts "INVALID check digit in isbn #{isbn_in}!"
-			end
-		else
-			puts "invalid isbn_in length (#{isbn_in.length})"
-		end
-		retVal
-	end
-
-	def verify_isbn13(isbn_in, printValids=false)
-		retVal = false
-		if (isbn_in.length == 13)
-			chkDgt = calc_checkDigit13(isbn_in[0,isbn_in.length-1])
-			#puts "chkDgt = #{chkDgt}; isbn_in = #{isbn_in}; isbn(substr) = #{isbn_in[0,isbn_in.length-1]}"
-			if isbn_in == isbn_in[0,isbn_in.length-1].to_s + chkDgt.to_s
-				retVal=true
-				if printValids
-					puts "valid check digit found in isbn #{isbn_in}!"
-				end
-			else
-				puts "INVALID check digit in isbn #{isbn_in}!"
-			end
-		else
-			puts "invalid isbn_in length (#{isbn_in.length})"
-		end
-		retVal
+	def verify(isbn_in)
+		calc_checkDigit(isbn_in[0..isbn_in.length-2]) == isbn_in[isbn_in.length-1,1].to_i
 	end
 
 	def calc_checkDigit(isbn_in)
@@ -80,14 +36,11 @@ module ISBN
 		for i2 in iarr
 			charPos += 1
 			csumTotal = csumTotal + (charPos * i2.to_i)
-			#puts "csumTotal (running) = #{csumTotal}"
 		end
-		#puts "csumTotal = #{csumTotal}"
 		checkDigit = csumTotal % 11
 		if (checkDigit == 10)
 			checkDigit = "X"
 		end
-		#puts "for partial isbn #{isbn_in} the checkDigit = #{checkDigit}; complete isbn = #{isbn_in}#{checkDigit}"
 		checkDigit
 	end
 
@@ -97,29 +50,24 @@ module ISBN
 		iarr = isbn_in.split(//)
 		for i1 in iarr
 			cP2 = charPos/2.to_f
-			#puts "#{cP2}; #{cP2.round}; #{cP2.floor}"
 
 			if (cP2.round == cP2.floor)
 				csumTotal = csumTotal + i1.to_i
-				#puts "csumTotal_a = #{csumTotal} + #{i1.to_i}"
 			else
 				csumTotal = csumTotal + (3*i1.to_i)
-				#puts "csumTotal_b = #{csumTotal} + #{3*i1.to_i}"
 			end
 			charPos += 1
 		end
-			#puts "csumTotal = #{csumTotal}"
 			if (csumTotal == (csumTotal/10.to_i)*10)
 				checkDigit = "0"
 			else
 				checkDigit = 10-(csumTotal - (csumTotal/10.to_i)*10)
 			end
 
-			#puts "checkDigit = 10-(#{csumTotal} - #{(csumTotal/10.to_i)*10})"
 			if (checkDigit == 10)
 				checkDigit = "X"
 			end
-			#puts "for partial isbn #{isbn_in} the checkDigit = #{checkDigit}; complete isbn = #{isbn_in}#{checkDigit}"
+
 			checkDigit
 	end
 
