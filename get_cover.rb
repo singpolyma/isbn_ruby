@@ -165,8 +165,10 @@ puts "Configuration: "
 puts "\tlibthing_devkey = #{$libthing_devkey}"
 puts "\tcover_dir = #{$cover_dir}"
 
-open("#{$cover_dir}/error.log", "a") do |$error_log|
-	open("#{$cover_dir}/get_cover.log", "a") do |$log|
+open("#{$cover_dir}/error.log", "a") do |error_log|
+	$error_log = error_log
+	open("#{$cover_dir}/get_cover.log", "a") do |log|
+		$log = log
 		fetch_covers("isbns-small.private.txt")
 	end
 end
