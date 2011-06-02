@@ -14,7 +14,7 @@
 #
 # Author; John D. Lewis < balinjdl - at - gmail - dot - com >
 #
-# See LICENSE for full license
+# See COPYING for full license
 #
 
 require 'net/http'
